@@ -30,15 +30,20 @@ public class TelemetriaB {
     int orientacion;
 
     public TelemetriaB(String cadena) throws Exception {//>REV022119483497+2097843-0896715400009312;ID=352557100342545<
+        cadena = limpiarCadena(cadena);
         obtenerIndice(cadena.substring(1, 2));
         obtenerCodigoEvento(cadena.substring(4, 6));
         obtenerFechaEvento(cadena.substring(6, 10),obtenerDia(cadena.charAt(10)) );
-        obtenerDiaSemana(cadena.charAt(10));
-        obtenerHoraEvento(cadena.substring(11, 16));
+        
+        
         obtenerLat(cadena.substring(16, 24));
         obtenerLng(cadena.substring(24, 33));
         obtenerVelocidad(cadena.substring(33, 36));
         obtenerOrientacion(cadena.substring(36, 39));
+        obtenerHoraEvento(cadena.substring(11, 16));
+        obtenerDiaSemana();
+        
+         
     }
 
     private void obtenerIndice(String cadena) throws Exception {
@@ -79,31 +84,31 @@ public class TelemetriaB {
         int dia = 0;
         switch (cadena) {
             case '0':
-                diaSemana = "Domingo";
+                //diaSemana = "Domingo";
                 dia=0;
                 break;
             case '1':
-                diaSemana = "Lunes";
+               // diaSemana = "Lunes";
                 dia=1;
                 break;
             case '2':
-                diaSemana = "Martes";
+               // diaSemana = "Martes";
                 dia=2;
                 break;
             case '3':
-                diaSemana = "Miercoles";
+              //  diaSemana = "Miercoles";
                 dia=3;
                 break;
             case '4':
-                diaSemana = "Jueves";
+                //diaSemana = "Jueves";
                 dia=4;
                 break;
             case '5':
-                diaSemana = "Viernes";
+              //  diaSemana = "Viernes";
                 dia=5;
                 break;
             case '6':
-                diaSemana = "Sabado";
+              //  diaSemana = "Sabado";
                 dia=6;
                 break;
 
@@ -111,28 +116,28 @@ public class TelemetriaB {
         return dia;
     }
 
-    private void obtenerDiaSemana(char cadena) throws Exception {
+    private void obtenerDiaSemana() throws Exception {
 
-        switch (cadena) {
-            case '0':
+        switch (horaEvento.getDay()) {
+            case 0:
                 diaSemana = "Domingo";
                 break;
-            case '1':
+            case 1:
                 diaSemana = "Lunes";
                 break;
-            case '2':
+            case 2:
                 diaSemana = "Martes";
                 break;
-            case '3':
+            case 3:
                 diaSemana = "Miercoles";
                 break;
-            case '4':
+            case 4:
                 diaSemana = "Jueves";
                 break;
-            case '5':
+            case 5:
                 diaSemana = "Viernes";
                 break;
-            case '6':
+            case 6:
                 diaSemana = "Sabado";
                 break;
             default:
@@ -146,19 +151,20 @@ public class TelemetriaB {
         //Date fechaInicio = sdf.parse("06-01-1980 00:00:00");//Creo un Date con la fecha de inicio segun el documento.
         Calendar calendar = Calendar.getInstance();//Creo un calendar con la fecha actual
         calendar.setTime(fechaEvento);//Seteo el calendaria actual con el de fecha de inicio ese 1980
-        calendar.add(Calendar.SECOND,Integer.parseInt(cadena));
+        calendar.add(Calendar.SECOND,Integer.parseInt(cadena)-18060 );
         //Le agreo dias porque no tiene para agregar semanas entonces dias * 7 
         horaEvento = calendar.getTime();//Seteo la fecha de inicio con la nueva fecha dodne aumente los dias
+        
     }
 
     private String showFechaEvent() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        String fecha = sdf.format(fechaEvento);
+        String fecha = sdf.format(horaEvento);
         return fecha;
     }
 
     private String showHoraEvent() {
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm",  Locale.UK);
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss",  Locale.UK);
         String hora = sdf.format(horaEvento);
         return hora;
     }
@@ -196,6 +202,16 @@ public class TelemetriaB {
                 + "LONGITUD: " + valorLng + lng + "\n"
                 + "VELOCIDAD: " + velocidad + " KM/H" + "\n"
                 + "ORIENTACION: " + orientacion;
+    }
+
+   
+
+    private String limpiarCadena(String cadena) {
+        
+        int i = cadena.indexOf("EV");
+        cadena = cadena.substring(i, cadena.length());
+      
+        return ">R" + cadena;
     }
 
 }

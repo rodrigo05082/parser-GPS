@@ -5,10 +5,12 @@
  */
 package Parseo;
 
+import java.awt.List;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
@@ -124,21 +126,24 @@ public class Parseo extends javax.swing.JFrame {
             String linea = "";
             while (((linea = br.readLine())) != null) {
                 try {
-                    if (linea.contains(";")) {
-                        telemetriaE.add(new TelemetriaE(linea));
+                    if (linea.contains("<>")) {
+                        ArrayList<String> trama = new ArrayList<String>(); 
+                        trama = traerLineas(linea);
+                        for (int i = 0; i < trama.size(); i++) {
+                           // System.out.println(trama.get(i));
+                            telemetriaE.add(new TelemetriaE(trama.get(i)));
+                        }
+                        
                        // txtArea.append(linea+"\n");
                     } else {
-                        telemetriaB.add(new TelemetriaB(linea));
+                        telemetriaE.add(new TelemetriaE(linea));
                        // txtArea.append(linea+"\n");
                     }
                 } catch (Exception e) {
                    contadorInvalido++;
                 }
             }
-            txtArea.append("TELEMETRIA BASICA"+"\n");
-            for (int i = 0; i < telemetriaB.size(); i++) {
-                txtArea.append(telemetriaB.get(i).showTelemetriaB()+"\n");
-            }
+            
              txtArea.append("TELEMETRIA EXTENDIDA"+"\n");
             for (int i = 0; i < telemetriaE.size(); i++) {
                 txtArea.append(telemetriaE.get(i).showTelemetriaE()+"\n");
@@ -197,4 +202,21 @@ public class Parseo extends javax.swing.JFrame {
     private javax.swing.JTextArea txtArea;
     private javax.swing.JTextField txtInvalidos;
     // End of variables declaration//GEN-END:variables
+
+    private ArrayList<String> traerLineas(String trama) {
+        ArrayList <String> lineas = null;
+        if (trama.indexOf("<>")>0){
+            lineas = new ArrayList<String>(Arrays.asList(trama.split("<>")));
+            for (int i = 0; i < lineas.size(); i++) {
+                if(!lineas.get(i).startsWith(">")){
+                    lineas.set(i, ">"+lineas.get(i));
+                }
+                if(!lineas.get(i).endsWith("<")){
+                    lineas.set(i, lineas.get(i)+"<");
+                }
+            }
+        }
+       
+        return lineas;
+    }
 }

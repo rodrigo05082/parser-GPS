@@ -80,8 +80,5 @@ public class TelemetriaE extends TelemetriaB {
             IMEI = "N/A";
         }
     }
-    public static void main(String[] args) throws Exception {
-        TelemetriaE test = new TelemetriaE(">REV002185588019+2102041-0895826900000000;ID=199401<");
-        System.out.println(test.showTelemetriaE());
-    }
+   
 }
