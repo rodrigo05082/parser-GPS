@@ -217,6 +217,6 @@ public class Parseo extends javax.swing.JFrame {
             }
         }
        
-        return lineas;
+        return lineas;//T
     }
 }

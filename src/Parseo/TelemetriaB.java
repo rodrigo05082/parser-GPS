@@ -151,7 +151,7 @@ public class TelemetriaB {
         //Date fechaInicio = sdf.parse("06-01-1980 00:00:00");//Creo un Date con la fecha de inicio segun el documento.
         Calendar calendar = Calendar.getInstance();//Creo un calendar con la fecha actual
         calendar.setTime(fechaEvento);//Seteo el calendaria actual con el de fecha de inicio ese 1980
-        calendar.add(Calendar.SECOND,Integer.parseInt(cadena)-18060 );
+        calendar.add(Calendar.SECOND,Integer.parseInt(cadena)-18060 );//T
         //Le agreo dias porque no tiene para agregar semanas entonces dias * 7 
         horaEvento = calendar.getTime();//Seteo la fecha de inicio con la nueva fecha dodne aumente los dias
         
